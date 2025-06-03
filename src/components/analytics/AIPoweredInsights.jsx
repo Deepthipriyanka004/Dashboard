@@ -1,28 +1,27 @@
 import { motion } from "framer-motion";
-import {  Users, Trash2,Utensils,BarChart } from "lucide-react";
+import { Search, Users, Mic, BarChart } from "lucide-react";
 
 const INSIGHTS = [
 	{
-		icon: Trash2,
+		icon: Search,
 		color: "text-red-500",
-		insight: "Daily food wastage in the hostel has decreased by 10% after implementing portion control measures.",
+		insight: "Resume keyword alignment has increased shortlisting chances by 82%, improving overall placement efficiency.",
 	},
 	{
 		icon: Users,
 		color: "text-blue-500",
-		insight: "Student participation in the food donation program has increased by 15% this week, reducing overall wastage.",
+		insight: "AI-driven skill gap analysis is helping students receive personalized learning paths, boosting placement readiness.",
 	},
 	{
-		icon: Utensils,
+		icon: Mic,
 		color: "text-purple-500",
-		insight: 'Leftover food from the mess is now being repurposed into meal boxes for distribution, cutting waste by 20% weekly.',
+		insight: "Mock interview performance data predicts real interview success with 78% accuracy, guiding focused training.",
 	},
 	{
 		icon: BarChart,
 		color: "text-green-500",
-		insight: "Analyzing food consumption patterns can help further reduce wastage by adjusting menu planning and portion sizes.",
+		insight: "AI predicts offer drop-offs by analyzing CTC and preference trends, helping maintain strong recruiter relationships.",
 	},
-	
 ];
 
 const AIPoweredInsights = () => {
@@ -47,4 +46,5 @@ const AIPoweredInsights = () => {
 		</motion.div>
 	);
 };
+
 export default AIPoweredInsights;

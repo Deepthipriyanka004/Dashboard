@@ -3,12 +3,12 @@ import { motion } from "framer-motion";
 import { Search } from "lucide-react";
 
 const initialData = [
-  { id: 1, name: "A", email: "22A91A1234@aec.edu.in", branch: "CSE", company: "TCS", placementstatus: "Placed" },
-  { id: 2, name: "B", email: "22A91A1234@aec.edu.in", branch: "ECE", company: "Infosys", placementstatus: "Placed" },
-  { id: 3, name: "C", email: "22A91A1234@aec.edu.in", branch: "EEE", company: "Capgemini", placementstatus: "Not Placed" },
-  { id: 4, name: "D", email: "22A91A1234@aec.edu.in", branch: "CSE", company: "TCS", placementstatus: "Placed" },
-  { id: 5, name: "E", email: "22A91A1234@aec.edu.in", branch: "ECE", company: "Infosys", placementstatus: "Placed" },
-  { id: 6, name: "F", email: "22A91A1234@aec.edu.in", branch: "EEE", company: "Capgemini", placementstatus: "Not Placed" },
+  { id: 1, name: "Anie", email: "22A91A1234@aec.edu.in", branch: "CSE", company: "TCS", placementstatus: "Placed" },
+  { id: 2, name: "Balu", email: "22A91A1234@aec.edu.in", branch: "ECE", company: "Infosys", placementstatus: "Placed" },
+  { id: 3, name: "Charan", email: "22A91A1234@aec.edu.in", branch: "EEE", company: "Capgemini", placementstatus: "Not Placed" },
+  { id: 4, name: "Divya", email: "22A91A1234@aec.edu.in", branch: "CSE", company: "TCS", placementstatus: "Placed" },
+  { id: 5, name: "Hanu", email: "22A91A1234@aec.edu.in", branch: "ECE", company: "Infosys", placementstatus: "Placed" },
+  { id: 6, name: "Pavan", email: "22A91A1234@aec.edu.in", branch: "EEE", company: "Capgemini", placementstatus: "Not Placed" },
 ];
 
 const StudentsTable = () => {
@@ -18,18 +18,29 @@ const StudentsTable = () => {
   const [editedData, setEditedData] = useState({});
 
   const handleSearch = (e) => {
-    setSearchTerm(e.target.value.toLowerCase());
+    setSearchTerm(e.target.value);
   };
 
-  const filteredStudents = students.filter(
-    (s) =>
-      s.name.toLowerCase().includes(searchTerm) ||
-      s.email.toLowerCase().includes(searchTerm)
-  );
+  // Normalize search term once
+  const term = searchTerm.trim().toLowerCase();
+
+  // Filter students: check if any field contains the search term (case-insensitive)
+  const filteredStudents = students.filter((student) => {
+    // Extract all searchable fields, convert to lower case
+    const fields = [
+      student.name,
+      student.email,
+      student.branch,
+      student.company,
+      student.placementstatus,
+    ].map((field) => field.toLowerCase());
+
+    // Return true if any field includes the search term
+    return fields.some((field) => field.includes(term));
+  });
 
   const handleDelete = (id) => {
-    const updated = students.filter((s) => s.id !== id);
-    setStudents(updated);
+    setStudents((prev) => prev.filter((s) => s.id !== id));
   };
 
   const handleEditClick = (student) => {
@@ -43,10 +54,9 @@ const StudentsTable = () => {
   };
 
   const handleUpdate = () => {
-    const updatedList = students.map((s) =>
-      s.id === editedData.id ? editedData : s
+    setStudents((prev) =>
+      prev.map((s) => (s.id === editedData.id ? editedData : s))
     );
-    setStudents(updatedList);
     setEditingStudent(null);
   };
 
@@ -86,55 +96,63 @@ const StudentsTable = () => {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-700">
-            {filteredStudents.map((student) => (
-              <motion.tr
-                key={student.id}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.3 }}
-              >
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="flex items-center">
-                    <div className="flex-shrink-0 h-10 w-10">
-                      <div className="h-10 w-10 rounded-full bg-gradient-to-r from-purple-400 to-blue-500 flex items-center justify-center text-white font-semibold">
-                        {student.name.charAt(0)}
+            {filteredStudents.length > 0 ? (
+              filteredStudents.map((student) => (
+                <motion.tr
+                  key={student.id}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="flex items-center">
+                      <div className="flex-shrink-0 h-10 w-10">
+                        <div className="h-10 w-10 rounded-full bg-gradient-to-r from-purple-400 to-blue-500 flex items-center justify-center text-white font-semibold">
+                          {student.name.charAt(0)}
+                        </div>
+                      </div>
+                      <div className="ml-4">
+                        <div className="text-sm font-medium text-gray-100">{student.name}</div>
                       </div>
                     </div>
-                    <div className="ml-4">
-                      <div className="text-sm font-medium text-gray-100">{student.name}</div>
-                    </div>
-                  </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{student.email}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{student.branch}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{student.company}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span
+                      className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                        student.placementstatus.toLowerCase() === "placed"
+                          ? "bg-green-800 text-green-100"
+                          : "bg-red-800 text-red-100"
+                      }`}
+                    >
+                      {student.placementstatus}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                    <button
+                      className="text-indigo-400 hover:text-indigo-300 mr-2"
+                      onClick={() => handleEditClick(student)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="text-red-400 hover:text-red-300"
+                      onClick={() => handleDelete(student.id)}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </motion.tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="6" className="text-center py-6 text-gray-400">
+                  No matching students found.
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{student.email}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{student.branch}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">{student.company}</td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <span
-                    className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                      student.placementstatus === "Placed"
-                        ? "bg-green-800 text-green-100"
-                        : "bg-red-800 text-red-100"
-                    }`}
-                  >
-                    {student.placementstatus}
-                  </span>
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
-                  <button
-                    className="text-indigo-400 hover:text-indigo-300 mr-2"
-                    onClick={() => handleEditClick(student)}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    className="text-red-400 hover:text-red-300"
-                    onClick={() => handleDelete(student.id)}
-                  >
-                    Delete
-                  </button>
-                </td>
-              </motion.tr>
-            ))}
+              </tr>
+            )}
           </tbody>
         </table>
       </div>

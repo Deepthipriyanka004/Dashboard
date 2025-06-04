@@ -9,10 +9,10 @@ import {
 } from "lucide-react";
 
 const overviewData = [
-  { name: "registered students", value: "1200", change: 4.7, icon: Users },
-  { name: "eligible candidates", value: "1100", change: 3.2, icon: Building2 },
-  { name: "shortlisted students", value: "900", change: 6.8, icon: ClipboardCheck },
-  { name: "placed students", value: "850", change: -2.5, icon: Briefcase }, // negative change here
+  { name: "Registered Students", value: "1200", change: 4.7, icon: Users },
+  { name: "Eligible Candidates", value: "1100", change: 3.2, icon: Building2 },
+  { name: "Shortlisted Students", value: "900", change: 6.8, icon: ClipboardCheck },
+  { name: "Placed Students", value: "850", change: -2.5, icon: Briefcase }, // negative change here
 ];
 
 const OverviewCards = () => {
